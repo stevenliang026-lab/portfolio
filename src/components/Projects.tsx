@@ -183,7 +183,7 @@ export default function Projects() {
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-white mb-2">{project.title}</h3>
                   <p className="text-zinc-500 text-sm mb-4 leading-relaxed">{project.desc}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
@@ -192,6 +192,24 @@ export default function Projects() {
                         {tag}
                       </span>
                     ))}
+                  </div>
+                  <div className="flex gap-3">
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-4 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+                    >
+                      Live Demo
+                    </a>
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors"
+                    >
+                      GitHub
+                    </a>
                   </div>
                 </div>
               </div>

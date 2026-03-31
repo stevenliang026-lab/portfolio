@@ -289,6 +289,27 @@ function Hero() {
             {t.hero.intro}
           </p>
 
+          {/* Quick access — direct links to live projects */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-12">
+            {[
+              { name: "TechWave", label: t.hero.role === "全栈开发者" ? "企业官网" : "Corporate Site", url: "https://techwave-pi.vercel.app" },
+              { name: "InsightBoard", label: t.hero.role === "全栈开发者" ? "数据面板" : "Dashboard", url: "https://dashboard-sand-pi-34.vercel.app" },
+              { name: "DataForge", label: t.hero.role === "全栈开发者" ? "开发工具" : "Dev Tool", url: "https://dataforge-silk.vercel.app" },
+            ].map((p, i) => (
+              <a key={i} href={p.url} target="_blank" rel="noopener noreferrer"
+                className="group flex items-center gap-3 px-4 py-3 border border-zinc-800/60 hover:border-amber-500/40 hover:bg-zinc-900/30 transition-all">
+                <span className="font-mono text-[10px] text-zinc-600">0{i + 1}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-stone-100 group-hover:text-amber-500 transition-colors">{p.name}</div>
+                  <div className="font-mono text-[10px] text-zinc-600">{p.label}</div>
+                </div>
+                <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="text-zinc-700 group-hover:text-amber-500 transition-colors shrink-0">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </a>
+            ))}
+          </div>
+
           {/* CTA */}
           <a href="#work" className="group inline-flex items-center gap-3 text-sm text-stone-100 border-b border-zinc-700 pb-1 hover:border-amber-500 transition-colors">
             {t.hero.cta}

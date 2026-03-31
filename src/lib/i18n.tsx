@@ -52,21 +52,21 @@ const translations = {
       items: [
         {
           title: "TechWave 企业官网",
-          desc: "为AI科技公司打造的现代化响应式官网，包含产品展示、定价方案、客户评价等完整板块。",
-          tags: ["Next.js", "Tailwind CSS", "响应式"],
+          desc: "为AI科技公司打造的交互式官网。滚动动画、计数器动画、定价月/年切换、FAQ手风琴、表单验证、评价轮播——完整的SaaS落地页。",
+          tags: ["Next.js", "动画", "交互设计"],
           url: "https://techwave-pi.vercel.app",
           github: "https://github.com/stevenliang026-lab/techwave",
         },
         {
           title: "InsightBoard 数据面板",
-          desc: "实时数据可视化仪表盘，包含营收图表、流量分析、转化率趋势和订单管理。",
+          desc: "5页面管理后台：概览/分析/订单/客户/设置。支持时间范围筛选、表头排序、搜索过滤、分页、订单详情面板，所有数据联动计算。",
           tags: ["React", "Recharts", "数据可视化"],
           url: "https://dashboard-sand-pi-34.vercel.app",
           github: "https://github.com/stevenliang026-lab/dashboard",
         },
         {
           title: "DataForge 数据转换工具",
-          desc: "在线数据格式转换工具，支持JSON/CSV/TSV/YAML互转，纯客户端处理。",
+          desc: "支持JSON/CSV/TSV/YAML/XML五种格式互转。拖拽上传、格式自动检测、语法高亮、行号显示、表格预览、键盘快捷键。",
           tags: ["TypeScript", "工具", "数据处理"],
           url: "https://dataforge-silk.vercel.app",
           github: "https://github.com/stevenliang026-lab/dataforge",
@@ -147,21 +147,21 @@ const translations = {
       items: [
         {
           title: "TechWave Corporate Site",
-          desc: "Modern responsive website for an AI tech company with product showcase, pricing, testimonials, and CTA sections.",
-          tags: ["Next.js", "Tailwind CSS", "Responsive"],
+          desc: "Interactive SaaS landing page with scroll animations, animated counters, monthly/annual pricing toggle, FAQ accordion, form validation, and testimonial carousel.",
+          tags: ["Next.js", "Animation", "Interactive"],
           url: "https://techwave-pi.vercel.app",
           github: "https://github.com/stevenliang026-lab/techwave",
         },
         {
           title: "InsightBoard Dashboard",
-          desc: "Real-time analytics dashboard with revenue charts, traffic analysis, conversion trends, and order management.",
+          desc: "5-page admin panel: Overview/Analytics/Orders/Customers/Settings. Time range filtering, column sorting, search, pagination, order detail panel — all data dynamically computed.",
           tags: ["React", "Recharts", "Data Viz"],
           url: "https://dashboard-sand-pi-34.vercel.app",
           github: "https://github.com/stevenliang026-lab/dashboard",
         },
         {
           title: "DataForge Converter",
-          desc: "Online data format conversion tool supporting JSON/CSV/TSV/YAML. Fully client-side processing.",
+          desc: "Universal data converter for JSON/CSV/TSV/YAML/XML. Drag-drop upload, auto-detection, syntax highlighting, line numbers, table preview, and keyboard shortcuts.",
           tags: ["TypeScript", "Tool", "Data"],
           url: "https://dataforge-silk.vercel.app",
           github: "https://github.com/stevenliang026-lab/dataforge",

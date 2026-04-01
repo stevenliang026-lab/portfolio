@@ -590,6 +590,186 @@ function Footer() {
 }
 
 /* ═══════════════════════════════════════════════
+   Chat Widget
+   ═══════════════════════════════════════════════ */
+interface Msg { role: "user" | "bot"; text: string }
+
+const CHAT_RESPONSES: Record<string, { zh: string; en: string }> = {
+  "price|pricing|价格|报价|收费|多少钱|cost|rate|budget": {
+    zh: "项目报价取决于复杂度和周期。一般来说：\n• 落地页/官网：¥3,000–8,000\n• 管理后台/Dashboard：¥8,000–20,000\n• 全栈应用：¥15,000+\n可以先聊聊需求，我给你一个准确的报价。",
+    en: "Pricing depends on scope and timeline:\n• Landing pages: $500–1,200\n• Dashboards: $1,200–3,000\n• Full-stack apps: $2,500+\nLet's discuss your needs for an accurate quote.",
+  },
+  "tech|stack|技术|技术栈|framework|react|next|what do you use": {
+    zh: "主要技术栈：React / Next.js / TypeScript / Tailwind CSS / Node.js / PostgreSQL。也有 Python、Swift 和云服务（Vercel、Supabase、AWS）的经验。根据项目需求选择最合适的方案。",
+    en: "Primary stack: React / Next.js / TypeScript / Tailwind CSS / Node.js / PostgreSQL. Also experienced with Python, Swift, and cloud services (Vercel, Supabase, AWS). I pick the best tool for each project.",
+  },
+  "project|案例|作品|portfolio|work|example|看看|展示": {
+    zh: "你可以在上方「精选作品」看到三个代表项目：\n• TechWave — 交互式企业官网\n• InsightBoard — 数据分析面板\n• DataForge — 数据格式转换工具\n每个都是可在线体验的完整项目，不是静态模板。",
+    en: "Check out the Featured Works section above:\n• TechWave — Interactive corporate site\n• InsightBoard — Analytics dashboard\n• DataForge — Data format converter\nAll fully interactive, not static mockups.",
+  },
+  "time|timeline|周期|多久|工期|how long|when|deadline|deliver": {
+    zh: "一般时间线：\n• 简单落地页：3–5 天\n• 中等复杂项目：1–2 周\n• 全栈应用：2–4 周\n我习惯每天同步进度，你随时可以看到最新状态。",
+    en: "Typical timelines:\n• Simple landing page: 3–5 days\n• Medium project: 1–2 weeks\n• Full-stack app: 2–4 weeks\nI share daily progress updates so you always know the status.",
+  },
+  "contact|联系|hire|雇|合作|email|邮箱|怎么找你|reach": {
+    zh: "可以直接发邮件到 stevenliang026@gmail.com，或者在下方联系表单留言。我通常 24 小时内回复。",
+    en: "Email me at stevenliang026@gmail.com or use the contact form below. I typically reply within 24 hours.",
+  },
+  "available|接单|有空|能接|是否可以|free|busy": {
+    zh: "目前可以接新项目！如果你有想法，可以先简单聊聊需求和预算，我来评估可行性。",
+    en: "Currently available for new projects! Share your idea and budget, and I'll assess feasibility.",
+  },
+  "hello|你好|hi|hey|嗨|哈喽|greet": {
+    zh: "你好！👋 我是 Steven 的智能助手。你可以问我关于项目报价、技术栈、合作方式等问题。有什么想了解的？",
+    en: "Hello! 👋 I'm Steven's assistant. Ask me about pricing, tech stack, availability, or past projects. How can I help?",
+  },
+};
+
+const FALLBACK = {
+  zh: "这个问题我暂时无法回答。你可以问我关于：报价、技术栈、项目案例、工期、联系方式等。或者直接发邮件 stevenliang026@gmail.com 聊聊你的需求。",
+  en: "I'm not sure about that. You can ask about: pricing, tech stack, projects, timelines, or contact info. Or email stevenliang026@gmail.com directly.",
+};
+
+function matchResponse(input: string, locale: Locale): string {
+  const lower = input.toLowerCase();
+  for (const [pattern, resp] of Object.entries(CHAT_RESPONSES)) {
+    const keywords = pattern.split("|");
+    if (keywords.some((k) => lower.includes(k))) return resp[locale];
+  }
+  return FALLBACK[locale];
+}
+
+function ChatWidget() {
+  const { locale } = useI18n();
+  const [open, setOpen] = useState(false);
+  const [msgs, setMsgs] = useState<Msg[]>([]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open && msgs.length === 0) {
+      setMsgs([{ role: "bot", text: locale === "zh"
+        ? "你好！我是 Steven 的 AI 助手。问我任何关于项目合作的问题吧 😊"
+        : "Hi! I'm Steven's AI assistant. Ask me anything about working together 😊" }]);
+    }
+  }, [open, locale, msgs.length]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  }, [msgs, typing]);
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
+
+  const send = useCallback(() => {
+    const q = input.trim();
+    if (!q) return;
+    setInput("");
+    setMsgs((p) => [...p, { role: "user", text: q }]);
+    setTyping(true);
+    const delay = 400 + Math.random() * 800;
+    setTimeout(() => {
+      setMsgs((p) => [...p, { role: "bot", text: matchResponse(q, locale) }]);
+      setTyping(false);
+    }, delay);
+  }, [input, locale]);
+
+  return (
+    <>
+      {/* Toggle */}
+      <button
+        onClick={() => setOpen((p) => !p)}
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-amber-500 hover:bg-amber-400 text-black flex items-center justify-center transition-all shadow-lg shadow-amber-500/20"
+        aria-label="Chat"
+      >
+        {open ? (
+          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+        ) : (
+          <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+        )}
+      </button>
+
+      {/* Panel */}
+      <div className={`fixed bottom-20 right-6 z-50 w-80 sm:w-96 transition-all duration-300 ${open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}`}>
+        <div className="border border-zinc-800 bg-[#0c0c0e] shadow-2xl flex flex-col" style={{ height: 440 }}>
+          {/* Header */}
+          <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-3">
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+            <div>
+              <div className="text-sm font-medium text-stone-100">Steven&apos;s AI Assistant</div>
+              <div className="text-[10px] text-zinc-600 font-mono">online &middot; avg. reply &lt; 1s</div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+            {msgs.map((m, i) => (
+              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`max-w-[80%] px-3 py-2 text-[13px] leading-relaxed whitespace-pre-line ${
+                  m.role === "user"
+                    ? "bg-amber-500/15 text-amber-200 border border-amber-500/20"
+                    : "bg-zinc-800/60 text-zinc-300 border border-zinc-700/40"
+                }`}>
+                  {m.text}
+                </div>
+              </div>
+            ))}
+            {typing && (
+              <div className="flex justify-start">
+                <div className="bg-zinc-800/60 border border-zinc-700/40 px-3 py-2 text-[13px] text-zinc-500">
+                  <span className="inline-flex gap-1">
+                    <span className="animate-bounce" style={{ animationDelay: "0ms" }}>&bull;</span>
+                    <span className="animate-bounce" style={{ animationDelay: "150ms" }}>&bull;</span>
+                    <span className="animate-bounce" style={{ animationDelay: "300ms" }}>&bull;</span>
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Quick prompts */}
+          {msgs.length <= 1 && (
+            <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+              {(locale === "zh"
+                ? ["报价多少？", "技术栈？", "能看案例吗？", "多久交付？"]
+                : ["Pricing?", "Tech stack?", "See projects?", "Timeline?"]
+              ).map((q) => (
+                <button
+                  key={q}
+                  onClick={() => { setInput(q); setTimeout(() => { setInput(""); setMsgs((p) => [...p, { role: "user", text: q }]); setTyping(true); setTimeout(() => { setMsgs((p) => [...p, { role: "bot", text: matchResponse(q, locale) }]); setTyping(false); }, 600); }, 50); }}
+                  className="px-2.5 py-1 text-[11px] border border-zinc-700/50 text-zinc-500 hover:text-amber-400 hover:border-amber-500/30 transition-colors"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input */}
+          <div className="px-3 py-2 border-t border-zinc-800 flex gap-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") send(); }}
+              placeholder={locale === "zh" ? "输入你的问题..." : "Ask a question..."}
+              className="flex-1 bg-transparent text-sm text-stone-100 placeholder-zinc-600 focus:outline-none"
+            />
+            <button onClick={send} disabled={!input.trim()} className="text-amber-500 disabled:text-zinc-700 transition-colors">
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    Page
    ═══════════════════════════════════════════════ */
 export default function Home() {
@@ -605,6 +785,7 @@ export default function Home() {
           <Contact />
         </main>
         <Footer />
+        <ChatWidget />
       </div>
     </I18n>
   );

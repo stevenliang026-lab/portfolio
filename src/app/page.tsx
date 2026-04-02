@@ -471,7 +471,7 @@ function About() {
    Contact — clean, functional
    ═══════════════════════════════════════════════ */
 function Contact() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { ref, v } = useInView();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -487,13 +487,26 @@ function Contact() {
     return e;
   }, [name, email, msg, t]);
 
-  const submit = (ev: React.FormEvent) => {
+  const submit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     const e = validate();
     setErrors(e);
-    if (Object.keys(e).length === 0) {
-      setPhase("sending");
-      setTimeout(() => setPhase("sent"), 1200);
+    if (Object.keys(e).length > 0) return;
+    setPhase("sending");
+    try {
+      const res = await fetch("https://bkuftdpykibmkvezgzjh.supabase.co/rest/v1/contact_messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrdWZ0ZHB5a2libWt2ZXpnempoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNzIxNzMsImV4cCI6MjA5MDY0ODE3M30.uuSXIpsWYbTzJPdzarirq0_PBKedcZaxz6a_87ntE-A",
+        },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: msg.trim() }),
+      });
+      if (res.ok) setPhase("sent");
+      else throw new Error();
+    } catch {
+      setPhase("idle");
+      setErrors({ msg: locale === "zh" ? "发送失败，请稍后重试" : "Failed to send, please try again" });
     }
   };
 

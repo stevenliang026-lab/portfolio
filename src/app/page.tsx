@@ -45,6 +45,15 @@ const T = {
         github: "https://github.com/stevenliang026-lab/dataforge",
         stack: "TypeScript / Next.js",
       },
+      {
+        title: "ClientFlow",
+        category: "全栈 SaaS",
+        desc: "完整的项目管理应用——用户认证、CRUD 操作、数据库建模、行级安全策略。支持项目和任务管理、仪表盘统计、个人设置，含 Demo 一键体验。",
+        features: ["用户认证", "项目 CRUD", "任务管理", "RLS 权限", "Demo 模式"],
+        url: "https://clientflow-delta.vercel.app",
+        github: "https://github.com/stevenliang026-lab/clientflow",
+        stack: "Next.js / Supabase / TypeScript",
+      },
     ],
     viewLive: "查看线上版本",
     viewSource: "源代码",
@@ -118,6 +127,15 @@ const T = {
         url: "https://dataforge-silk.vercel.app",
         github: "https://github.com/stevenliang026-lab/dataforge",
         stack: "TypeScript / Next.js",
+      },
+      {
+        title: "ClientFlow",
+        category: "Full-Stack SaaS",
+        desc: "Complete project management app — user auth, CRUD operations, database modeling, row-level security. Manage projects and tasks, dashboard stats, profile settings, with one-click demo.",
+        features: ["Authentication", "Projects CRUD", "Task management", "RLS policies", "Demo mode"],
+        url: "https://clientflow-delta.vercel.app",
+        github: "https://github.com/stevenliang026-lab/clientflow",
+        stack: "Next.js / Supabase / TypeScript",
       },
     ],
     viewLive: "View live",
@@ -295,6 +313,7 @@ function Hero() {
               { name: "TechWave", label: t.hero.role === "全栈开发者" ? "企业官网" : "Corporate Site", url: "https://techwave-pi.vercel.app" },
               { name: "InsightBoard", label: t.hero.role === "全栈开发者" ? "数据面板" : "Dashboard", url: "https://dashboard-sand-pi-34.vercel.app" },
               { name: "DataForge", label: t.hero.role === "全栈开发者" ? "开发工具" : "Dev Tool", url: "https://dataforge-silk.vercel.app" },
+              { name: "ClientFlow", label: t.hero.role === "全栈开发者" ? "全栈 SaaS" : "Full-Stack SaaS", url: "https://clientflow-delta.vercel.app" },
             ].map((p, i) => (
               <a key={i} href={p.url} target="_blank" rel="noopener noreferrer"
                 className="group flex items-center gap-3 px-4 py-3 border border-zinc-800/60 hover:border-amber-500/40 hover:bg-zinc-900/30 transition-all">
